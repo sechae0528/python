@@ -1,0 +1,70 @@
+#!/usr/bin/python
+# from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from http.server import BaseHTTPRequestHandler,HTTPServer
+from socketserver import ThreadingMixIn
+import json
+import re
+
+
+PORT_NUMBER = 8073
+
+# This class will handle any incoming request from
+# a browser
+class myHandler(BaseHTTPRequestHandler):
+
+
+    # Handler for the GET requests
+    def do_GET(self):
+
+        data = {}
+
+        print('Get request received')
+        if None != re.search('/api/v1/getrecord', self.path):
+
+            #recordID = (self.path.split('/')[-1]).split('?')[0]
+            #print("recordID = ", recordID)
+            #if recordID == "1" :
+                self.send_response(200)
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+                # Send the html message
+                self.wfile.write(bytes("<html><head><title>Title goes here.</title></head>", "utf-8"))
+                self.wfile.write(bytes("<body><p>Hello python!!</p>", "utf-8"))
+                self.wfile.write(bytes("<p>You accessed path: %s</p>" % self.path, "utf-8"))
+                self.wfile.write(bytes("</body></html>", "utf-8"))
+
+
+                #print(json.dumps(data, sort_keys=True, indent=4))
+                #self.wfile.write(bytes(json.dumps(data, sort_keys=True, indent=4), "utf-8"))
+
+
+            #else:
+               # self.send_response(400, 'Bad Request: record does not exist')
+               # self.send_header('Content-Type', 'application/json')
+               # self.end_headers()
+        else:
+            self.send_response(403)
+            self.send_header('Content-Type', 'application/json')
+            self.end_headers()
+        # ref : https://mafayyaz.wordpress.com/2013/02/08/writing-simple-http-server-in-python-with-rest-and-json/
+
+
+        return
+
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+    """Handle requests in a separate thread."""
+
+try:
+
+    # Create a web server and define the handler to manage the
+    # incoming request
+    server = HTTPServer(('', PORT_NUMBER), myHandler)
+    #server = ThreadedHTTPServer(('localhost', PORT_NUMBER), myHandler) 자체테스트할 때만 사용('localhost')
+    print ('Started httpserver on port ' , PORT_NUMBER)
+
+    # Wait forever for incoming http requests
+    server.serve_forever()
+
+except KeyboardInterrupt:
+    print ('^C received, shutting down the web server')
+    server.socket.close()

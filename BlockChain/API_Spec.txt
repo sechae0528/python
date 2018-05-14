@@ -1,0 +1,4 @@
+﻿요청 url : http://192.168.110.116:8073/api/v1/addrecord
+
+출력Format : 입력요청한 JSON을  코드소유자 정보 추가하여 리턴
+예>  {“key1": [“value1",“value2"], “key2": “value1“, author:cse}
