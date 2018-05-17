@@ -26,11 +26,12 @@ class myHandler(BaseHTTPRequestHandler):
             print("queryString = ", queryString)
             if None != queryString :
                 self.send_response(200)
-                self.send_header('Content-type', 'text/html')
+                self.send_header('Content-type', 'text/html;charset=utf-8')
                 self.end_headers()
                 # Send the html message
                 self.wfile.write(bytes("<html><head><title>Title goes here.</title></head>", "utf-8"))
                 self.wfile.write(bytes("<body><p>This is a test.</p>", "utf-8"))
+                self.wfile.write(bytes("<body><p>한글</p>", "utf-8"))
                 self.wfile.write(bytes("<p>You accessed path: %s</p>" % self.path, "utf-8"))
                 self.wfile.write(bytes("<p>Your query: %s</p>" % queryString, "utf-8"))
                 self.wfile.write(bytes("</body></html>", "utf-8"))
@@ -53,20 +54,21 @@ class myHandler(BaseHTTPRequestHandler):
                 receivedData = post_data.decode('utf-8')
                 print(type(receivedData))
                 tempDict = json.loads(receivedData) #+ {author:cse} #  load your str into a dict
-                tempDict.update({'author':'cse'})
+                #tempDict.update({'author':'cse'})
+                #tempDict['author']='cse'
                 print(type(tempDict))
                 print(tempDict)
 
                 self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
-                self.wfile.write(bytes(json.dumps(tempDict), "utf-8"))
+                self.wfile.write(bytes(json.dumps(tempDict), "utf-8")) #json으로 예쁘게 만들어 보여줌
 
             elif ctype == 'application/x-www-form-urlencoded':
                 content_length = int(self.headers['content-length'])
                 # trouble shooting, below code ref : https://github.com/aws/chalice/issues/355
                 postvars = parse_qs((self.rfile.read(content_length)).decode('utf-8'),keep_blank_values=True)
-                postvars.update({'author': 'cse'})
+                #postvars.update({'author': 'cse'})
                 print(postvars)
                 print(type(postvars))
                 print(postvars.keys())

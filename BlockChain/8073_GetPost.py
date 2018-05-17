@@ -26,11 +26,12 @@ class myHandler(BaseHTTPRequestHandler):
             print("queryString = ", queryString)
             if None != queryString :
                 self.send_response(200)
-                self.send_header('Content-type', 'text/html')
+                self.send_header('Content-type', 'text/html;charset=utf-8')
                 self.end_headers()
                 # Send the html message
                 self.wfile.write(bytes("<html><head><title>Title goes here.</title></head>", "utf-8"))
                 self.wfile.write(bytes("<body><p>This is a test.</p>", "utf-8"))
+                self.wfile.write(bytes("<body><p>한글</p>", "utf-8"))
                 self.wfile.write(bytes("<p>You accessed path: %s</p>" % self.path, "utf-8"))
                 self.wfile.write(bytes("<p>Your query: %s</p>" % queryString, "utf-8"))
                 self.wfile.write(bytes("</body></html>", "utf-8"))
@@ -52,8 +53,9 @@ class myHandler(BaseHTTPRequestHandler):
                 post_data = self.rfile.read(content_length)
                 receivedData = post_data.decode('utf-8')
                 print(type(receivedData))
-                tempDict = json.loads(receivedData) #+ {author:cse} #  load your str into a dict
-                tempDict.update({'author':'cse'})
+                tempDict = json.loads(receivedData)  #  load your str into a dict
+                tempDict.update({'author':'cse'}) #+ {author:cse}
+                # tempDict['author']='cse'
                 print(type(tempDict))
                 print(tempDict)
 

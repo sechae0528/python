@@ -20,7 +20,7 @@ class myHandler(BaseHTTPRequestHandler):
     def do_GET(self):
 
         print('Get request received')
-        if None != re.search('/api/v1/getrecord', self.path): # url이 http://~/api/v1/getrecord/~ 형태인지 검사
+        if None != re.search('/api/v1/getrecord/*', self.path): # url이 http://~/api/v1/getrecord/~ 형태인지 검사
 
             queryString = urlparse(self.path).query.split('=')[1]  # url이 /api/v1/getrecord?key=value 형태에서 value값을 찾는다.
 
