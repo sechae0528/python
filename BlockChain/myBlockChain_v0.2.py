@@ -19,12 +19,12 @@ class Block:
     # A basic block contains, index (blockheight), the previous hash, a timestamp, tx information, a nonce, and the current hash
 
     def __init__(self, index, previousHash, timestamp, data, currentHash, proof ):
-        self.index = index
-        self.previousHash = previousHash
-        self.timestamp = timestamp
-        self.data = data
-        self.currentHash = currentHash
-        self.proof = proof
+        self.index = index #블록의 높이
+        self.previousHash = previousHash #이전블록의 해쉬값(이전블록의 연결고리, 스냅샷)
+        self.timestamp = timestamp #블록생성시점
+        self.data = data #거래 데이터
+        self.currentHash = currentHash #현재 블록의 해쉬값
+        self.proof = proof #작업증명 값(XX횟수)
 
     def toJSON(self):
         return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)
@@ -71,16 +71,17 @@ def writeBlockchain(blockchain):
 
     print('Blockchain written to blockchain.csv.')
 
-def readBlockchain(blockchainFilePath, mode = 'internal'):
+def readBlockchain(blockchainFilePath, mode = 'internal'): #외부에서 들어오는 것은 external 내부에서 조회하는 것은 internal
+                                                        # mode 값을 안주면 자동으로 internal 값으로 인식한다.
     print("readBlockchain")
-    importedBlockchain = []
+    importedBlockchain = [] # list형식
 
     try:
-        with open(blockchainFilePath, 'r',  newline='') as file:
-            blockReader = csv.reader(file)
+        with open(blockchainFilePath, 'r',  newline='') as file: #csv파일을 read모드로 읽겠다. newline : window에서만 사용할 때 필요, 다른 서버에 올릴 때는 필요없음
+            blockReader = csv.reader(file) #csv : 여섯개의 정보
             for line in blockReader:
                 block = Block(line[0], line[1], line[2], line[3], line[4], line[5])
-                importedBlockchain.append(block)
+                importedBlockchain.append(block) #list형식으로 블록이 생김 [Block1], {Block2], [Block3]
 
         print("Pulling blockchain from csv...")
 
@@ -212,7 +213,7 @@ class myHandler(BaseHTTPRequestHandler):
             self.end_headers()
 
             if None != re.search('/block/getBlockData', self.path):
-                # TODO: range return (~/block/getBlockData?from=1&to=300)
+                # TODO: range return (~/block/getBlockData?from=1&to=300) #from ~ to :범위를 정해서 받는게 좋음. 리턴값이 크면 처리하기 힘들기 때문에
                 # queryString = urlparse(self.path).query.split('&')
 
                 block = readBlockchain('blockchain.csv', mode = 'external')
@@ -222,7 +223,7 @@ class myHandler(BaseHTTPRequestHandler):
                     data.append("no data exists")
                 else :
                     for i in block:
-                        print(i.__dict__)
+                        print(i.__dict__) #i : 하나하나가 class Block을 뜻함 #__dict__ : 변수명과 변수값을 dictionary형태로 찍어라.
                         data.append(i.__dict__)
                         #data.append(i.toJSON()) # --> 이 방법은 안됨 리턴문자열에 '\' 문자 포함됨
 
