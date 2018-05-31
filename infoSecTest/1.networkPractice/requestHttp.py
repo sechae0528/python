@@ -1,7 +1,7 @@
 import requests
 
-baseUrl = 'http://192.168.110.116:8080'
+baseUrl = 'http://www.nate.com'
 
 r = requests.get(baseUrl)
-print(r)
+print(r.text)
 print(r.status_code)

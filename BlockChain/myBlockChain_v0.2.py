@@ -40,8 +40,8 @@ def generateGenesisBlock():
 
 def calculateHash(index, previousHash, timestamp, data, proof):
     value = str(index) + str(previousHash) + str(timestamp) + str(data) + str(proof)
-    sha = hashlib.sha256(value.encode('utf-8'))
-    return str(sha.hexdigest())
+    sha = hashlib.sha256(value.encode('utf-8')) #sha256 형식으로 지정된 해시 객체 생성
+    return str(sha.hexdigest()) #hexdigest 방법을 이용해 객체로부터 sha256 해시에 대한 16진수 값을 구함
 
 def calculateHashForBlock(block):
     return calculateHash(block.index, block.previousHash, block.timestamp, block.data, block.proof)
@@ -114,7 +114,7 @@ def mineNewBlock(difficulty=2, blockchainPath='blockchain.csv'):
 
     while not newBlockFound:
         newBlockAttempt = generateNextBlock(blockchain, txData, timestamp, proof)
-        if newBlockAttempt.currentHash[0:difficulty] == '0' * difficulty:
+        if newBlockAttempt.currentHash[0:difficulty] == '0' * difficulty: #앞부분에 0이 2개면 빠져나가서 writeBlockChain 해라.
             stopTime = time.time()
             timer = stopTime - timestamp
             print('New block found with proof', proof, 'in', round(timer, 2), 'seconds.')
@@ -291,7 +291,8 @@ try:
     # Create a web server and define the handler to manage the
     # incoming request
     # server = HTTPServer(('', PORT_NUMBER), myHandler)
-    server = ThreadedHTTPServer(('localhost', PORT_NUMBER), myHandler)
+    #server = ThreadedHTTPServer(('localhost', PORT_NUMBER), myHandler) #localhost에서만 서비스를 돌릴 수 있다.
+    server = ThreadedHTTPServer(('', PORT_NUMBER), myHandler)
     print('Started httpserver on port ', PORT_NUMBER)
 
     # Wait forever for incoming http requests

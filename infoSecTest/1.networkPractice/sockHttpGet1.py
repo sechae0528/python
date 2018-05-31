@@ -7,6 +7,8 @@ sock.connect(("www.nate.com", 80))
 data = ''
 try:
     sock.sendall(b"GET / HTTP/1.1\r\nHost: nate.com\r\n\r\n")
+    #sock.sendall(b"GET / HTTP/1.1")
+
     data = sock.recvfrom(1024)
 except socket.error:
     print ("Socket error", socket.errno)

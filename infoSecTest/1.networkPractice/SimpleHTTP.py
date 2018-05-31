@@ -1,6 +1,6 @@
 import http.client
 
-h = http.client.HTTPConnection("192.168.110.116:8080")
+h = http.client.HTTPConnection("nate.com:80")
 h.request("GET", "/")
 data = h.getresponse()
 print (data.code)

@@ -1,7 +1,7 @@
 import socket
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sock.connect(("192.168.110.116", 8080))
+sock.connect(("192.168.110.116", 8000))
 
 
 data = ''

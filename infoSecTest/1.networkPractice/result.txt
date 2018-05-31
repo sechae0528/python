@@ -7,3 +7,75 @@ ssh & open & SA \\
 \hline
 \end{tabular}
 
+111 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+sunrpc & open & SA \\
+\hline
+\hline
+\hline
+\end{tabular}
+
+260 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+\hline
+openport & closed & TCP RA \\
+\hline
+\hline
+\end{tabular}
+
+557 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+\hline
+openvms_sysipc & closed & TCP RA \\
+\hline
+\hline
+\end{tabular}
+
+1194 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+\hline
+openvpn & closed & TCP RA \\
+\hline
+\hline
+\end{tabular}
+
+1258 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+\hline
+opennl & closed & TCP RA \\
+\hline
+\hline
+\end{tabular}
+
+1259 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+\hline
+opennl_voice & closed & TCP RA \\
+\hline
+\hline
+\end{tabular}
+
+1473 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+\hline
+openmath & closed & TCP RA \\
+\hline
+\hline
+\end{tabular}
+
+1619 port is open
+\begin{tabular}{|r|l|l|}
+\hline
+\hline
+xs_openstorage & closed & TCP RA \\
+\hline
+\hline
+\end{tabular}
+
