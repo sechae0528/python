@@ -113,9 +113,9 @@ def readBlockchain(blockchainFilePath, mode = 'internal'):
             return None
 
 def updateTx(blockData) :
-
+    #re : 정규표현식. # \w : 문자를 찾아라 [-]전까지 . 결국은 - 빼고 다 붙여서 문자열로 만드는 것이다.
     phrase = re.compile(r"\w+[-]\w+[-]\w+[-]\w+[-]\w+") # [6b3b3c1e-858d-4e3b-b012-8faac98b49a8]UserID hwang sent 333 bitTokens to UserID kim.
-    matchList = phrase.findall(blockData.data)
+    matchList = phrase.findall(blockData.data) #matchList = 고유아이디 #blockData.data : transaction 데이터
 
     if len(matchList) == 0 :
         print ("No Match Found! " + blockData.data + "block idx: " + blockData.index)
@@ -127,7 +127,7 @@ def updateTx(blockData) :
         reader = csv.reader(csvfile)
         writer = csv.writer(tempfile)
         for row in reader:
-            if row[4] in matchList:
+            if row[4] in matchList: #row[4]가 matchList에 포함되있느냐
                 print('updating row : ', row[4])
                 row[0] = 1
             writer.writerow(row)
@@ -137,26 +137,26 @@ def updateTx(blockData) :
     tempfile.close()
     print('txData updated')
 
-def writeTx(txRawData):
+def writeTx(txRawData): #파일을 쓰는 로직
     txDataList = []
     for txDatum in txRawData:
         txList = [txDatum.commitYN, txDatum.sender, txDatum.amount, txDatum.receiver, txDatum.uuid]
         txDataList.append(txList)
 
-    tempfile = NamedTemporaryFile(mode='w', newline='', delete=False)
-    try:
-        with open(g_txFileName, 'r', newline='') as csvfile, tempfile:
-            reader = csv.reader(csvfile)
-            writer = csv.writer(tempfile)
-            for row in reader:
+    tempfile = NamedTemporaryFile(mode='w', newline='', delete=False) #임시파일을 만듦
+    try: #with 실행시 에러날 경우,with 자체가 리소스파일을 반환시켜준다.
+        with open(g_txFileName, 'r', newline='') as csvfile, tempfile: #csvfile을 read해서 open하고, tempfile을 준비
+            reader = csv.reader(csvfile) #원본데이터를 읽어온다
+            writer = csv.writer(tempfile) #임시데이터를 생성하고 쓴다.
+            for row in reader: #리더로부터 한줄한줄 읽어서 한줄씩 임시파일에 집어넣는다.
                 if row :
                     writer.writerow(row)
             # adding new tx
-            writer.writerows(txDataList)
-        shutil.move(tempfile.name, g_txFileName)
+            writer.writerows(txDataList) #새롭게 들어온 파일은 한꺼번에 임시파일에 집어 넣겠다.
+        shutil.move(tempfile.name, g_txFileName) #임시파일이 원본파일에 덮어쓴다.
         csvfile.close()
         tempfile.close()
-    except:
+    except: #원본파일이 없을 경우, 한번도 생성하지 않았을때 실행
         # this is 1st time of creating txFile
         try:
             with open(g_txFileName, "w", newline='') as file:
@@ -252,20 +252,20 @@ def isValidNewBlock(newBlock, previousBlock):
     return True
 
 
-def newtx(txToMining):
+def newtx(txToMining): #누가 얼마를 누구에게 주었다. json형식으로 들어옴
 
     newtxData = []
     # transform given data to txData object
     for line in txToMining:
-        tx = txData(0, line['sender'], line['amount'], line['receiver'], uuid.uuid4())
-        newtxData.append(tx)
+        tx = txData(0, line['sender'], line['amount'], line['receiver'], uuid.uuid4()) #import uuid : 고유한 번호
+        newtxData.append(tx) # : txData를 달고 있음
 
     # limitation check : max 5 tx
-    if len(newtxData) > 5 :
+    if len(newtxData) > 5 : #거래데이터가 5개가 넘어가면
         print('number of requested tx exceeds limitation')
         return -1
 
-    if writeTx(newtxData) == 0:
+    if writeTx(newtxData) == 0: #파일을 CSV로 쓰겠다.
         print("file write error on txData")
         return -2
     return 1
@@ -411,10 +411,10 @@ class myHandler(BaseHTTPRequestHandler):
                     if  res == 1 :
                         tempDict.append("accepted : it will be mined later")
                         self.wfile.write(bytes(json.dumps(tempDict), "utf-8"))
-                    elif res == -1 :
+                    elif res == -1 : #너무 많이 데이터를 주었을 때,
                         tempDict.append("declined : number of request txData exceeds limitation")
                         self.wfile.write(bytes(json.dumps(tempDict), "utf-8"))
-                    elif res == -2 :
+                    elif res == -2 : #데이터가 비정상적일 때,
                         tempDict.append("declined : error on data read or write")
                         self.wfile.write(bytes(json.dumps(tempDict), "utf-8"))
                     else :
@@ -445,3 +445,5 @@ try:
 except KeyboardInterrupt:
     print('^C received, shutting down the web server')
     server.socket.close()
+
+#블록체인데이터는 유지하고 transaction 데이터는 지워야한다.
