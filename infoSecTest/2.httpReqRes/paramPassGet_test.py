@@ -2,9 +2,9 @@ import requests
 #URL = 'http://192.168.110.116:8090/api/v1/getrecord'
 
 URL = 'http://localhost:8090/api/v1/getrecord'
-response = requests.get(URL)
-print(response.status_code)
-print(response.text)
+#response = requests.get(URL)
+#print(response.status_code)
+#print(response.text)
 
 # GET 방식 호출
 params = {'key1': 'value1'}

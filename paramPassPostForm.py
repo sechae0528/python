@@ -1,9 +1,9 @@
 import requests
-URL = 'http://localhost:8090/api/v1/addrecord'
+URL = 'http://192.168.110.116:8090/api/v1/addrecord'
 
 
 # POST 방식 호출 (application/x-www-form-urlencoded)
-data = {'key1': 'value1', 'key2': 'value'}
+data = {'key1': 'value1', 'key2': 'smrt0073'}
 res = requests.post(URL, data=data)
 print(res)
 
