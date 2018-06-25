@@ -22,7 +22,7 @@ g_nodelstFileName = "nodelst.csv" #노드 정보(서버ip,port,커넥션실패�
 g_receiveNewBlock = "/node/receiveNewBlock" #주고받는 노드간 인터페이스 API
 g_difficulty = 2
 g_maximumTry = 100
-g_nodeList = {'127.0.0.1':'8099'} # trusted server list, should be checked manually
+g_nodeList = {'127.0.0.1':'8098'} # trusted server list, should be checked manually
 #서버가 처음쓸때, 믿을만한 리스트를 써놓는 곳, 초기 setup할때 사용
 
 class Block:

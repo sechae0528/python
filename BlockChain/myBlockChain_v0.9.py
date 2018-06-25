@@ -84,7 +84,7 @@ def writeBlockchain(blockchain):
 
     #[STARAT] check current db(csv) if broadcasted block data has already been updated
     lastBlock = None
-    try:
+    try:  #파일이 없을 때, 최초일 때는 에러가 남/ 네트워크가 끊겼을때 에러
         with open(g_bcFileName, 'r',  newline='') as file:
             blockReader = csv.reader(file)
             last_line_number = row_count(g_bcFileName)
