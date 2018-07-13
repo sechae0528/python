@@ -1,17 +1,17 @@
 import socket
 import threading
 
-
 class clientReq(threading.Thread):
+
     def __init__(self, number):
         threading.Thread.__init__(self)
         self.number = number
 
     def run(self):
-        # sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # addr = ("www.naver.com", 443)
-        # sock.connect(addr)
-        print("Connected" + str(self.number))
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        addr = ("www.naver.com", 443)
+        sock.connect(addr)
+        print("Connected " +str(self.number))
 
 
 clients = []
